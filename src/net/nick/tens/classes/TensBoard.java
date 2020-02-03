@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The ElevensBoard class represents the board in a game of Elevens.
  */
-public class ElevensBoard extends Board {
+public class TensBoard extends Board {
 
 	/**
 	 * The size (number of cards) on the board.
@@ -16,13 +16,13 @@ public class ElevensBoard extends Board {
 	 * The ranks of the cards for this game to be sent to the deck.
 	 */
 	private static final String[] RANKS =
-		{"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
+		{"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
 	/**
 	 * The suits of the cards for this game to be sent to the deck.
 	 */
 	private static final String[] SUITS =
-		{"spades", "hearts", "diamonds", "clubs"};
+		{"Spades", "Hearts", "Diamonds", "Clubs"};
 
 	/**
 	 * The values of the cards for this game to be sent to the deck.
@@ -39,7 +39,7 @@ public class ElevensBoard extends Board {
 	/**
 	 * Creates a new <code>ElevensBoard</code> instance.
 	 */
-	 public ElevensBoard() {
+	 public TensBoard() {
 	 	super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
 	 }
 
@@ -131,13 +131,13 @@ public class ElevensBoard extends Board {
 		int Tcnt = 0;
 		for (Integer kObj : selectedCards) {
 			int k = kObj.intValue();
-			if (cardAt(k).rank().equals("jack")) {
+			if (cardAt(k).rank().equals("Jack")) {
 				Jcnt++;
-			} else if (cardAt(k).rank().equals("queen")) {
+			} else if (cardAt(k).rank().equals("Queen")) {
 				Qcnt++;
 			} else if (cardAt(k).rank().equals("10")) {
 				Tcnt++;
-			} else if (cardAt(k).rank().equals("king")) {
+			} else if (cardAt(k).rank().equals("King")) {
 				Kcnt++;
 			}
 		}

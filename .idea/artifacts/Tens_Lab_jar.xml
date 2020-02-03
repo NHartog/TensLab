@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Tens Lab:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Tens_Lab_jar</output-path>
+    <root id="archive" name="Tens Lab.jar">
+      <element id="module-output" name="Tens Lab" />
+    </root>
+  </artifact>
+</component>
