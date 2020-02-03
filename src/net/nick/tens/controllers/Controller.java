@@ -1,34 +1,42 @@
 package net.nick.tens.controllers;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import net.nick.tens.classes.Board;
 import net.nick.tens.classes.Card;
-import net.nick.tens.classes.ElevensBoard;
+import net.nick.tens.classes.TensBoard;
 
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Controller {
 
 
-
+    public Text moveCnt;
     private boolean[] selections;
     private Board board;
     private ArrayList<ImageView> displayCards = new ArrayList<>();
     private ArrayList<Image> forPane = new ArrayList<>();
-    private int totalGames = 0;
-    private int totalWins = 0;
+    private double totalGames = 1;
+    private double totalWins = 0;
+    private int totalLoses = 0;
+
     private int moves = 0;
-    private String loss = "You Lost, so now they don't get the hotel :(";
-    private String win = "Now they get to watch their Disney movies in the hotels!";
+    private int index = 0;
+    private int gridCnt = 0;
+    private int zeroOrOne = 0;
+    private String loss = "You Lost";
+    private String win = "Congratulations, you actually won!";
+
 
     @FXML private ImageView one;
     @FXML private ImageView two;
@@ -52,9 +60,35 @@ public class Controller {
 
     @FXML public Text left;
 
+    @FXML public GridPane dealtCard;
+
+    @FXML public Text wonText;
+    @FXML public Text gameText;
+    @FXML public Text gameLostText;
+    @FXML public Text percentText;
+
     @FXML
     private void initialize() {
-        Board gameBoard = new ElevensBoard();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Instructions");
+        alert.setHeaderText("How To Play Tens");
+        alert.setContentText("Welcome to Tens, where Mr.Rico was too lazy to create an original idea for a homework\n" +
+                "To win you must clear all the cards in the deck. There will be 13 cards on the table at \n" +
+                "all times. The unshuffled number of cards is at the bottom\n" +
+                "To replace cards, you must select two card that add up to 10 (aces are worth one) \n" +
+                "or you can choose four of the same acrds if they are Tens, Pipes, Trevors  or Nicholas'\n" +
+                "I wish you luck because thats what this game is all about ");
+
+        ButtonType buttonTypeOne = new ButtonType("I understand");
+        alert.getButtonTypes().setAll(buttonTypeOne);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne) {
+            // ... user chose "One"
+            System.out.println("kept playing");
+        }
+
+
+        Board gameBoard = new TensBoard();
         board = gameBoard;
         System.out.println("here?");
         selections = new boolean[board.size()];
@@ -79,7 +113,6 @@ public class Controller {
     public void setBoardDisplay(){
         for(int r = 0; r < board.size(); r++){
             String cardImageFileName = imageFileName(board.cardAt(r), selections[r]);
-            System.out.println(cardImageFileName);
             Image imageURL = new Image(cardImageFileName);
             if (imageURL != null ) {
                 displayCards.get(r).setImage(imageURL);
@@ -90,31 +123,44 @@ public class Controller {
             }
         }
     }
-//
+    //
     private void signalLoss() {
         statusMsg.setVisible(true);
         statusMsg.setText(loss);
+        totalLoses++;
+        gameLostText.setText(String.valueOf(totalLoses));
+        System.out.println(totalWins/totalGames);
+        String percent = String.format("%d", (int)((totalWins / totalGames) * 100));
+        percentText.setText(percent + "%");
         totalGames++;
     }
 
     private void signalWin() {
         statusMsg.setVisible(true);
         statusMsg.setText(win);
+        statusMsg.setFill(Color.LIGHTGREEN);
         totalWins++;
+        wonText.setText(String.valueOf((int)totalWins));
+        System.out.println(totalWins/totalGames);
+        String percent = String.format("%d", (int)((totalWins / totalGames) * 100));
+        percentText.setText(percent + "%");
         totalGames++;
     }
 
 
     private String imageFileName(Card c, boolean isSelected) {
-        String str = "net/nick/tens/files/cards/";
+        String str = "net/nick/tens/files/PNG/";
         if (c == null) {
-            return "cards/back1.GIF";
+            return "net/nick/tens/files/PNG/red_back.png";
         }
-        str += c.rank() + c.suit();
+        String crd =c.suit().substring(0,1);
+        str += c.rank() + c.suit().substring(0,1);
+        System.out.println(str);
         if (isSelected) {
-            str += "S";
+            str += " copy";
         }
-        str += ".GIF";
+        str += ".png";
+        System.out.println(str);
         return str;
     }
 
@@ -142,15 +188,34 @@ public class Controller {
             signalLoss();
         }
         setBoardDisplay();
-        for(int i = 0; i< forPane.size(); i++){
-            plays.setContent(new ImageView(forPane.get(i)));
-
-        }
         numMoves.setText(String.valueOf(moves));
         left.setText(String.valueOf(board.deckSize()));
+
+        for(int i = forPane.size()-selection.size(); i< forPane.size(); i++) {
+            ImageView img = new ImageView(forPane.get(i));
+            img.setFitHeight(97.0);
+            img.setFitWidth(73.0);
+            System.out.println("adding..");
+            dealtCard.add(img, zeroOrOne, gridCnt);
+            index++;
+            if (zeroOrOne == 0) {
+                zeroOrOne = 1;
+            } else {
+                zeroOrOne = 0;
+                gridCnt++;
+            }
+        }
+
     }
 
     public void restart(MouseEvent mouseEvent) {
+        moves = 0;
+        gameText.setText(String.valueOf((int)totalGames));
+        dealtCard.getChildren().clear();
+        gridCnt = 0;
+        zeroOrOne = 0;
+        numMoves.setText("0");
+        left.setText(String.valueOf(board.deckSize()));
         statusMsg.setText("");
         board.newGame();
         statusMsg.setVisible(false);
@@ -164,7 +229,6 @@ public class Controller {
     }
 
     public void selectCard(MouseEvent e) {
-        Image img = new Image("net/nick/tens/files/cards/2clubs.GIF");
         for (int k = 0; k < board.size(); k++) {
             if (e.getSource().equals(displayCards.get(k))
                     && board.cardAt(k) != null) {
@@ -177,5 +241,9 @@ public class Controller {
                 return;
             }
         }
+    }
+
+    public void exit(MouseEvent mouseEvent) {
+        System.exit(0);
     }
 }
