@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    //when program is run, initalizes the root and stage to actaully show project
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/net/nick/tens/files/fxml/testingcss.fxml"));

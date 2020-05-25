@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class TensBoard extends Board {
 
+	//instance variables
 	/**
 	 * The size (number of cards) on the board.
 	 */
@@ -16,32 +17,31 @@ public class TensBoard extends Board {
 	 * The ranks of the cards for this game to be sent to the deck.
 	 */
 	private static final String[] RANKS =
-		{"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+			{"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
 
 	/**
 	 * The suits of the cards for this game to be sent to the deck.
 	 */
 	private static final String[] SUITS =
-		{"Spades", "Hearts", "Diamonds", "Clubs"};
+			{"Spades", "Hearts", "Diamonds", "Clubs"};
 
 	/**
 	 * The values of the cards for this game to be sent to the deck.
 	 */
 	private static final int[] POINT_VALUES =
-		{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0};
+			{1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 0, 0, 0};
 
-	/**
-	 * Flag used to control debugging print statements.
-	 */
-	private static final boolean I_AM_DEBUGGING = false;
 
+	//constructor for board
 
 	/**
 	 * Creates a new <code>ElevensBoard</code> instance.
 	 */
-	 public TensBoard() {
-	 	super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
-	 }
+	public TensBoard() {
+		super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
+	}
+
+	//checks if move is legal
 
 	/**
 	 * Determines if the selected cards form a valid group for removal.
@@ -78,13 +78,16 @@ public class TensBoard extends Board {
 		return containsFour(cIndexes) || containsPairSum10(cIndexes);
 	}
 
+	//cheskc if 10 sum is possibe
+
 	/**
 	 * Check for an 11-pair in the selected cards.
+	 *
 	 * @param selectedCards selects a subset of this board.  It is list
 	 *                      of indexes into this board that are searched
 	 *                      to find an 11-pair.
 	 * @return true if the board entries in selectedCards
-	 *              contain an 11-pair; false otherwise.
+	 * contain an 11-pair; false otherwise.
 	 */
 	private boolean containsPairSum10(List<Integer> selectedCards) {
 		for (int sk1 = 0; sk1 < selectedCards.size(); sk1++) {
@@ -124,7 +127,8 @@ public class TensBoard extends Board {
 //		return foundJack && foundQueen && foundKing;
 //	}
 
-	private boolean containsFour(List<Integer> selectedCards){
+	//checks to see if there is a possible combination of 4
+	private boolean containsFour(List<Integer> selectedCards) {
 		int Jcnt = 0;
 		int Qcnt = 0;
 		int Kcnt = 0;

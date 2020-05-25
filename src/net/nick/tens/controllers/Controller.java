@@ -19,6 +19,7 @@ import java.util.Optional;
 
 public class Controller {
 
+    //instance variables
 
     public Text moveCnt;
     private boolean[] selections;
@@ -36,27 +37,6 @@ public class Controller {
     private String win = "Congratulations, you actually won!";
 
 
-    @FXML private ImageView one;
-    @FXML private ImageView two;
-    @FXML private ImageView three;
-    @FXML private ImageView four;
-    @FXML private ImageView five;
-    @FXML private ImageView six;
-    @FXML private ImageView seven;
-    @FXML
-    private ImageView eight;
-    @FXML
-    private ImageView nine;
-    @FXML
-    private ImageView ten;
-    @FXML
-    private ImageView eleven;
-    @FXML
-    private ImageView twelve;
-    @FXML
-    private ImageView thirteen;
-
-
     @FXML
     public Text numMoves;
     @FXML
@@ -70,11 +50,14 @@ public class Controller {
     @FXML
     public Text wonText;
     @FXML
+    public GridPane dealtCard;
+    //instance variables for fx obhects
+    @FXML
+    private ImageView one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen;
+    @FXML
     private Text statusMsg;
 
-    @FXML
-    public GridPane dealtCard;
-
+    //initializes the "game". Brings up pop up message with instuctions
     @FXML
     private void initialize() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -117,11 +100,12 @@ public class Controller {
         setBoardDisplay();
     }
 
+    // sets up the Board in the Gridpane once the game has been initiailzed
     public void setBoardDisplay(){
         for(int r = 0; r < board.size(); r++){
             String cardImageFileName = imageFileName(board.cardAt(r), selections[r]);
             Image imageURL = new Image(cardImageFileName);
-            if (imageURL != null ) {
+            if (imageURL != null) {
                 displayCards.get(r).setImage(imageURL);
                 displayCards.get(r).setVisible(true);
             } else {
@@ -130,18 +114,20 @@ public class Controller {
             }
         }
     }
-    //
+
+    //if this method has been csalled, restarts game, increments variables for games played, and gives loss message
     private void signalLoss() {
         statusMsg.setVisible(true);
         statusMsg.setText(loss);
         totalLoses++;
         gameLostText.setText(String.valueOf(totalLoses));
-        System.out.println(totalWins/totalGames);
-        String percent = String.format("%d", (int)((totalWins / totalGames) * 100));
+        System.out.println(totalWins / totalGames);
+        String percent = String.format("%d", (int) ((totalWins / totalGames) * 100));
         percentText.setText(percent + "%");
         totalGames++;
     }
 
+    //if this method is called, retsarts game, increments total games variable, and gives win message
     private void signalWin() {
         statusMsg.setVisible(true);
         statusMsg.setText(win);
@@ -154,7 +140,7 @@ public class Controller {
         totalGames++;
     }
 
-
+    //Getter method for getting the card images
     private String imageFileName(Card c, boolean isSelected) {
         String str = "net/nick/tens/files/PNG/";
         if (c == null) {
@@ -171,6 +157,7 @@ public class Controller {
         return str;
     }
 
+    //method uses a mouse event (click) to swap a card
     public void replace(MouseEvent mouseEvent) {
         moves++;
         System.out.println("replacing...");
@@ -215,6 +202,7 @@ public class Controller {
 
     }
 
+    //retsarts game and variables based on mouse event (click)
     public void restart(MouseEvent mouseEvent) {
         moves = 0;
         gameText.setText(String.valueOf((int)totalGames));
@@ -235,6 +223,7 @@ public class Controller {
         setBoardDisplay();
     }
 
+    //called if a card object is clicked (mouse event)
     public void selectCard(MouseEvent e) {
         for (int k = 0; k < board.size(); k++) {
             if (e.getSource().equals(displayCards.get(k))
@@ -250,6 +239,7 @@ public class Controller {
         }
     }
 
+    // if exit button clicked use this method
     public void exit(MouseEvent mouseEvent) {
         System.exit(0);
     }

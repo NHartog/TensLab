@@ -6,10 +6,11 @@ import java.util.List;
 /**
  * The Deck class represents a shuffled deck of cards.
  * It provides several operations including
- *      initialize, shuffle, deal, and check if empty.
+ * initialize, shuffle, deal, and check if empty.
  */
 public class Deck {
 
+	//instance varaibles
 	/**
 	 * cards contains all the cards in the deck.
 	 */
@@ -27,10 +28,13 @@ public class Deck {
 	 * Creates a new <code>Deck</code> instance.<BR>
 	 * It pairs each element of ranks with each element of suits,
 	 * and produces one of the corresponding card.
-	 * @param ranks is an array containing all of the card ranks.
-	 * @param suits is an array containing all of the card suits.
+	 *
+	 * @param ranks  is an array containing all of the card ranks.
+	 * @param suits  is an array containing all of the card suits.
 	 * @param values is an array containing all of the card point values.
 	 */
+
+	//constructor
 	public Deck(String[] ranks, String[] suits, int[] values) {
 		System.out.println("recreating");
 		cards = new ArrayList<Card>();
@@ -43,9 +47,11 @@ public class Deck {
 		shuffle();
 	}
 
+	//Getters
 
 	/**
 	 * Determines if this deck is empty (no undealt cards).
+	 *
 	 * @return true if this deck is empty, false otherwise.
 	 */
 	public boolean isEmpty() {
@@ -54,11 +60,15 @@ public class Deck {
 
 	/**
 	 * Accesses the number of undealt cards in this deck.
+	 *
 	 * @return the number of undealt cards in this deck.
 	 */
 	public int size() {
 		return size;
 	}
+
+
+	//action method (puts the cards on a random position in a list
 
 	/**
 	 * Randomly permute the given collection of cards
@@ -78,9 +88,12 @@ public class Deck {
 
 	/**
 	 * Deals a card from this deck.
+	 *
 	 * @return the card just dealt, or null if all the cards have been
-	 *         previously dealt.
+	 * previously dealt.
 	 */
+
+	//action method deals a card to a player
 	public Card deal() {
 		if (isEmpty()) {
 			return null;
@@ -90,8 +103,11 @@ public class Deck {
 		return c;
 	}
 
+	// to string to give strnig representation of entire deck
+
 	/**
 	 * Generates and returns a string representation of this deck.
+	 *
 	 * @return a string representation of this deck.
 	 */
 	@Override
